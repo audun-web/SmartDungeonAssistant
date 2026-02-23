@@ -1,0 +1,7 @@
+## Interface: 11404
+## Title: SmartDungeonAssistant
+## Notes: Smart Dungeon helper for WoW Classic Era
+## Author: Audun Midtgård Meckelborg
+## SavedVariablesPerCharacter: SmartDungeonAssistantDB
+
+SmartDungeonAssistant.lua
