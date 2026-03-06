@@ -45,6 +45,19 @@ exitDungeonFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 exitDungeonFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 exitDungeonFrame:RegisterEvent("PLAYER_DEAD")
 
+--------------------------------------------------------------------------------------------------------------------
+
+-- lager database hvis database ikke finnes
+if not SmartDungeonAssistantDB then
+    SmartDungeonAssistantDB = {}
+end
+-- lager sub database i databse hvis den ikke finnes
+if not SmartDungeonAssistantDB.runs then
+    SmartDungeonAssistantDB.runs = {}
+end
+
+--------------------------------------------------------------------------------------------------------------------
+
 
 -- hva som skjer når events blir fanget opp
 exitDungeonFrame:SetScript("OnEvent", function(self, event)
@@ -90,7 +103,18 @@ exitDungeonFrame:SetScript("OnEvent", function(self, event)
                 print("- Total Deaths:", playerDeaths)
                 print("==========================")
 
-                myText:SetText("Dungeon Complete!\nTime: " .. formatted .. "\nDeaths: " .. playerDeaths)
+                myText:SetText(
+                    "Dungeon Complete!\nTime: " .. formatted .. "\nDeaths: " .. playerDeaths
+                )
+
+                local runData = {
+                    name = dungeonName,
+                    duration = duration,    -- tiden i sekunder
+                    deaths = playerDeaths,
+                    date = date("%Y-%m-%d") -- dagens dato
+                }
+                
+                table.insert(SmartDungeonAssistantDB.runs, runData) -- setter inn informasjonen i sub databasen
 
 
 
