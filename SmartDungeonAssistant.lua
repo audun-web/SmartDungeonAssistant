@@ -12,7 +12,7 @@ print("SmartDungeonAssistant has loaded!")
 
 local exitDungeonFrame = CreateFrame("Frame", "SmartResultsFrame", UIParent, "BackdropTemplate") -- resultat vinduet som vises når spiller forlater dungeon
 
-exitDungeonFrame:SetSize(500, 400)
+exitDungeonFrame:SetSize(200, 150)
 exitDungeonFrame:SetPoint("CENTER")
 
 exitDungeonFrame:SetBackdrop({
@@ -34,6 +34,11 @@ local function FormatTime(seconds)
     local secs = math.floor(seconds % 60)
     return string.format("%02d:%02d", mintutes, secs)
 end
+
+-- tekst i vinduet
+local myText = exitDungeonFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+myText:SetPoint("CENTER", exitDungeonFrame, "CENTER", 0, 0)
+
 
 -- events som blir registrert
 exitDungeonFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -81,9 +86,11 @@ exitDungeonFrame:SetScript("OnEvent", function(self, event)
                 -- summary
                 print("==== Dungeon Complete ====")
                 print("- Dungeon:", dungeonName)
-                print("- Time usede:", formatted)
+                print("- Time used:", formatted)
                 print("- Total Deaths:", playerDeaths)
                 print("==========================")
+
+                myText:SetText("Dungeon Complete!\nTime: " .. formatted .. "\nDeaths: " .. playerDeaths)
 
 
 
@@ -120,3 +127,4 @@ local closeButton = CreateFrame("Button", nil, exitDungeonFrame, "UIPanelCloseBu
 
 closeButton:SetSize(32, 32)
 closeButton:SetPoint("TOPRIGHT", exitDungeonFrame, "TOPRIGHT", -5, -5)
+
