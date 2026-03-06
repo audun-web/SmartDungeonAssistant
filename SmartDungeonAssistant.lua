@@ -3,6 +3,8 @@ local runActive = false
 local runStartTime = nil
 local runEndTime = nil
 local dungeonName = ""
+local playerDeaths = 0
+local playerJustDied = false
 
 
 print("SmartDungeonAssistant has loaded!")
@@ -35,49 +37,80 @@ end
 
 -- events som blir registrert
 exitDungeonFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+exitDungeonFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+exitDungeonFrame:RegisterEvent("PLAYER_DEAD")
 
 
 -- hva som skjer når events blir fanget opp
 exitDungeonFrame:SetScript("OnEvent", function(self, event)
 
-    C_Timer.After(1, function() -- delay
+    if event == "PLAYER_ENTERING_WORLD" then
 
-        local inInstance, instanceType = IsInInstance()
+        C_Timer.After(1, function()
 
-        -- ENTER DUNGEON
-        if inInstance and instanceType == "party" then
-            
-            if not runActive then
-                wasInDungeon = true
-                runActive = true
+            local inInstance, instanceType = IsInInstance()
 
-                runStartTime = GetTime()
-                print("Entered dungeon!")
+            if inInstance and instanceType == "party" then
 
-                local name = GetInstanceInfo()
-                dungeonName = name
+                playerJustDied = false
+
+                if not runActive then
+                    wasInDungeon = true
+                    runActive = true
+
+                    playerDeaths = 0
+
+                    runStartTime = GetTime()
+                    print("Entered dungeon!")
+
+                    local name = GetInstanceInfo()
+                    dungeonName = name
+                end
+
+            elseif wasInDungeon and not inInstance and not playerJustDied then
+
+                exitDungeonFrame:Show()
+
+                runEndTime = GetTime()
+
+                local duration = runEndTime - runStartTime
+                local formatted = FormatTime(duration)
+
+                wasInDungeon = false
+
+                -- summary
+                print("==== Dungeon Complete ====")
+                print("- Dungeon:", dungeonName)
+                print("- Time usede:", formatted)
+                print("- Total Deaths:", playerDeaths)
+                print("==========================")
+
+
+
+                runActive = false
+
             end
 
-        -- EXIT DUNGEON
-        elseif wasInDungeon and not inInstance then
+        end)
 
-            exitDungeonFrame:Show()
+    elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
 
-            runEndTime = GetTime()
+        local _, subevent, _, _, _, _, _, destGUID = CombatLogGetCurrentEventInfo()
 
-            local duration = runEndTime - runStartTime
-            local formatted = FormatTime(duration)
-            
-            wasInDungeon = false
-
-            print("You have completed -", dungeonName)
-            print("Time:", formatted)
-
-            runActive = false
-
+        if subevent == "UNIT_DIED" then
+            if destGUID == UnitGUID("player") then
+                if runActive then
+                    playerDeaths = playerDeaths + 1
+                    print("You died! Total deaths:", playerDeaths)
+                end
+            end
         end
 
-    end)
+    elseif event == "PLAYER_DEAD" then
+
+        playerJustDied = true
+
+    end
 
 end)
 
