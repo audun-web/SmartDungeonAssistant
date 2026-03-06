@@ -5,7 +5,7 @@
 - [x] Starts run timer upon entering dungeon
 - [x] Stops timer when leaving dungeon
 - [x] Basic run summary after dungeon
-- [ ] Stores dungeon name `getInstanceInfo()`
+- [x] Stores dungeon name `getInstanceInfo()`
   
 # Phase 2 - Run Tracking System
 

@@ -2,6 +2,7 @@ local wasInDungeon = false
 local runActive = false
 local runStartTime = nil
 local runEndTime = nil
+local dungeonName = ""
 
 
 print("SmartDungeonAssistant has loaded!")
@@ -52,10 +53,13 @@ exitDungeonFrame:SetScript("OnEvent", function(self, event)
 
                 runStartTime = GetTime()
                 print("Entered dungeon!")
+
+                local name = GetInstanceInfo()
+                dungeonName = name
             end
 
         -- EXIT DUNGEON
-        elseif wasInDungeon then
+        elseif wasInDungeon and not inInstance then
 
             exitDungeonFrame:Show()
 
@@ -66,8 +70,10 @@ exitDungeonFrame:SetScript("OnEvent", function(self, event)
             
             wasInDungeon = false
 
-            print("Dungeon Complete!")
+            print("You have completed -", dungeonName)
             print("Time:", formatted)
+
+            runActive = false
 
         end
 
