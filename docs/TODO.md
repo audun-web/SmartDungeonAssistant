@@ -2,9 +2,9 @@
 
 - [x] Detects player entering dungeon
 - [x] Detects Player leaving dungeon
-- [ ] Starts run timer upon entering dungeon
-- [ ] Stops timer when leaving dungeon
-- [ ] Basic run summary after dungeon
+- [x] Starts run timer upon entering dungeon
+- [x] Stops timer when leaving dungeon
+- [x] Basic run summary after dungeon
 - [ ] Stores dungeon name `getInstanceInfo()`
   
 # Phase 2 - Run Tracking System
@@ -14,7 +14,7 @@
 - [ ] Detect dungeon wipes `all-players-dead`
 - [ ] Track player XP at dungeon start
 - [ ] Calculate total XP earned when dungeon ends
-- [ ] Format time as `MM:SS - 15:32`
+- [x] Format time as `MM:SS - 15:32`
 
 # Phase 3 - Quest Tracking
 
