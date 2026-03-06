@@ -10,7 +10,7 @@
 # Phase 2 - Run Tracking System
 
 - [ ] Track total deaths during dungeon `party-wide`
-- [ ] Track player deaths during dungeon `separatly`
+- [x] Track player deaths during dungeon `separatly`
 - [ ] Detect dungeon wipes `all-players-dead`
 - [ ] Track player XP at dungeon start
 - [ ] Calculate total XP earned when dungeon ends
@@ -27,18 +27,18 @@
 
 # Phase 4 - Saved Variables
 
-- [ ] Create SavedVariables table
-- [ ] Save each dungeon run to history
+- [x] Create SavedVariables table
+- [x] Save each dungeon run to history
 - [ ] Store `Dungeon name, time, deaths, wipes, xp gains, date`
 - [ ] Load history on login
-- [ ] Add `/sda history` custom command in chat
+- [x] Add `/sda history` custom command in chat
 
 # Phase 5 - UI system
 
-- [ ] Show results window on dungeon exit
+- [x] Show results window on dungeon exit
 - [ ] Add title `dungeon name`
 - [ ] Display `time, deaths, wipes, xp gains`
-- [ ] Add close button `esc`
+- [x] Add close button `esc`
 - [ ] Make window draggable
 - [ ] Add scrollable history list
 - [ ] Add `delete history` button

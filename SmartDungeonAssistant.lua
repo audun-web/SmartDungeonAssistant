@@ -56,6 +56,22 @@ if not SmartDungeonAssistantDB.runs then
     SmartDungeonAssistantDB.runs = {}
 end
 
+-- funksjon som printer ut historikken
+local function ShowRunHistory()
+    if not SmartDungeonAssistantDB or not SmartDungeonAssistantDB.runs then
+        print("No dungeon history found!")
+        return
+    end
+
+    print("==== Dungeon Run History ====")
+    for i, run in ipairs(SmartDungeonAssistantDB.runs) do
+        print(i .. ". " .. run.name .. " | Tid: " .. FormatTime(run.duration) .. " | Deaths: " .. run.deaths .. " | Dato: " .. (run.date or "UNKOWN"))
+    end
+    print("============================")
+end
+-- chat kommand som printer ut historikken
+SLASH_SDAHISTORY1 = "/sdahistory"
+SlashCmdList["SDAHISTORY"] = ShowRunHistory
 --------------------------------------------------------------------------------------------------------------------
 
 
