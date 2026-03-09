@@ -9,7 +9,7 @@
   
 # Phase 2 - Run Tracking System
 
-- [ ] Track total deaths during dungeon `party-wide`
+- [x] Track total deaths during dungeon `party-wide`
 - [x] Track player deaths during dungeon `separatly`
 - [ ] Detect dungeon wipes `all-players-dead`
 - [ ] Track player XP at dungeon start

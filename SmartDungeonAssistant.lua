@@ -5,6 +5,7 @@ local runEndTime = nil
 local dungeonName = ""
 local playerDeaths = 0
 local playerJustDied = false
+local partyDeaths = 0
 
 
 print("SmartDungeonAssistant has loaded!")
@@ -74,6 +75,22 @@ SLASH_SDAHISTORY1 = "/sdahistory"
 SlashCmdList["SDAHISTORY"] = ShowRunHistory
 --------------------------------------------------------------------------------------------------------------------
 
+local function IsGUIDInParty(guid)
+
+    if guid == UnitGUID("player") then
+        return true
+    end
+
+    for i = 1, GetNumGroupMembers() do
+        local unit = "party"..i
+        if UnitGUID(unit) == guid then
+            return true
+        end
+    end
+
+    return false
+end
+
 
 -- hva som skjer når events blir fanget opp
 exitDungeonFrame:SetScript("OnEvent", function(self, event)
@@ -93,6 +110,7 @@ exitDungeonFrame:SetScript("OnEvent", function(self, event)
                     runActive = true
 
                     playerDeaths = 0
+                    partyDeaths = 0
 
                     runStartTime = GetTime()
                     print("Entered dungeon!")
@@ -117,10 +135,13 @@ exitDungeonFrame:SetScript("OnEvent", function(self, event)
                 print("- Dungeon:", dungeonName)
                 print("- Time used:", formatted)
                 print("- Total Deaths:", playerDeaths)
+                print("- Party Deaths:", partyDeaths)
                 print("==========================")
 
                 myText:SetText(
-                    "Dungeon Complete!\nTime: " .. formatted .. "\nDeaths: " .. playerDeaths
+                    "Dungeon Complete!\nTime: " .. formatted .. 
+                    "\nYour Deaths: " .. playerDeaths ..
+                    "\nParty Deaths: " .. partyDeaths
                 )
 
                 local runData = {
@@ -145,12 +166,23 @@ exitDungeonFrame:SetScript("OnEvent", function(self, event)
         local _, subevent, _, _, _, _, _, destGUID = CombatLogGetCurrentEventInfo()
 
         if subevent == "UNIT_DIED" then
-            if destGUID == UnitGUID("player") then
-                if runActive then
+
+            if runActive then
+        
+                -- din egen død
+                if destGUID == UnitGUID("player") then
                     playerDeaths = playerDeaths + 1
                     print("You died! Total deaths:", playerDeaths)
                 end
+        
+                -- party death
+                if IsGUIDInParty(destGUID) then
+                    partyDeaths = partyDeaths + 1
+                    print("Party member died! Total party deaths:", partyDeaths)
+                end
+        
             end
+        
         end
 
     elseif event == "PLAYER_DEAD" then
